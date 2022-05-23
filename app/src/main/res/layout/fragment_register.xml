@@ -88,7 +88,7 @@
             android:id="@+id/btn_register"
             android:text="Register"
             android:layout_marginVertical="5dp"
-            android:backgroundTint="@color/cardview_dark_background"
+            android:backgroundTint="@color/custom_bluedua"
             android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>

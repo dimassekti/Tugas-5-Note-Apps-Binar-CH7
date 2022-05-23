@@ -46,6 +46,10 @@ class DetailFragment : Fragment() {
         tv_detail_time.text = noteDetail.time
         tv_detail_title.text = noteDetail.title
 
+        iv_detail_back.setOnClickListener {
+            Navigation.findNavController(requireView()).navigate(R.id.action_detailFragment_to_homeFragment)
+        }
+
         iv_detail_delete.setOnClickListener {
 
             val ADBuilder = AlertDialog.Builder(it.context)

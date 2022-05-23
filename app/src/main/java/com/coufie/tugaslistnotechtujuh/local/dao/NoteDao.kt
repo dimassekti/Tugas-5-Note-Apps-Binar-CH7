@@ -27,6 +27,9 @@ interface NoteDao {
     @Query("SELECT * FROM User WHERE username = :username")
     fun findUser(username : String) : List<User>
 
+    @Update
+    fun updateUser(user: User) : Int
+
     @Query("SELECT username FROM User " +
             "WHERE User.username = :username AND User.password = :password")
     fun checkLogin(username: String, password : String) : String

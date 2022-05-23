@@ -57,6 +57,13 @@
                 android:layout_height="wrap_content">
 
                 <ImageView
+                    android:id="@+id/iv_detail_back"
+                    android:layout_margin="15dp"
+                    android:src="@drawable/icons8_back_30"
+                    android:layout_width="26dp"
+                    android:layout_height="26dp"/>
+
+                <ImageView
                     android:id="@+id/iv_detail_edit"
                     android:layout_margin="15dp"
                     android:src="@drawable/ic_icons8_edit"
