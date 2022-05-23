@@ -58,11 +58,12 @@ class ProfileFragment : Fragment() {
 
         userManager.userPassword.asLiveData().observe(viewLifecycleOwner, {
             password = it.toString()
+            et_update_password.hint = password
         })
 
         userManager.userUsername.asLiveData().observe(viewLifecycleOwner, {
             username = it.toString()
-            et_update_username.setText(username)
+            et_update_username.hint = username
         })
     }
 

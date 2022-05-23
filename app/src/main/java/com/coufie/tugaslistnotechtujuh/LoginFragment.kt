@@ -104,7 +104,6 @@ class LoginFragment : Fragment() {
 
                 }
 
-                view?.let { Navigation.findNavController(it).navigate(R.id.action_loginFragment_to_homeFragment) }
             }
 
         }else{
