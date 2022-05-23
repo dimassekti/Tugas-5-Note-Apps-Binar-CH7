@@ -1,6 +1,5 @@
 package com.coufie.tugaslistnotechtujuh
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,14 +9,13 @@ import androidx.lifecycle.asLiveData
 import androidx.navigation.Navigation
 import com.coufie.tugaslistnotechtujuh.datastore.UserManager
 import com.coufie.tugaslistnotechtujuh.local.database.NoteDatabase
-import com.coufie.tugaslistnotechtujuh.local.database.UserDatabase
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class ProfileFragment : Fragment() {
 
-    var userDb : UserDatabase?= null
+    var noteDb : NoteDatabase?= null
 
     lateinit var userManager: UserManager
 

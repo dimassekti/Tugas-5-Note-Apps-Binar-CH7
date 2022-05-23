@@ -2,12 +2,15 @@ package com.coufie.tugaslistnotechtujuh
 
 import android.app.AlertDialog
 import android.content.DialogInterface
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.annotation.RequiresApi
+import androidx.core.os.bundleOf
 import androidx.lifecycle.asLiveData
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,6 +23,9 @@ import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
 
 
 class HomeFragment : Fragment() {
@@ -41,6 +47,7 @@ class HomeFragment : Fragment() {
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -51,6 +58,7 @@ class HomeFragment : Fragment() {
             username = it.toString()
             tv_header.setText("$username")
         })
+
 
         noteDb = NoteDatabase.getInstance(requireContext())
 
@@ -98,11 +106,17 @@ class HomeFragment : Fragment() {
 
                 if(customDialogAdd.et_input_judul.text.length > 0 && customDialogAdd.et_input_catatan.text.length > 0){
 
+
                     GlobalScope.async {
 
                         val judul = customDialogAdd.et_input_judul.text.toString()
                         val catatan = customDialogAdd.et_input_catatan.text.toString()
-                        noteDb?.noteDao()?.insertNote(Note(null, judul, catatan))
+
+                        val current = LocalDateTime.now()
+                        val formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM)
+                        val formatted = current.format(formatter)
+
+                        noteDb?.noteDao()?.insertNote(Note(null, judul, catatan, formatted))
 
                     }
 
@@ -123,7 +137,7 @@ class HomeFragment : Fragment() {
 
 
     fun getNoteData(){
-        rv_note.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+
 
         GlobalScope.launch {
             val listData = noteDb?.noteDao()?.getAllNote()
@@ -132,7 +146,11 @@ class HomeFragment : Fragment() {
                     tv_kosong.setText("Belum ada catatan")
                 }
                 listData.let {
-                    rv_note.adapter = NoteAdapter(it!!)
+                    rv_note.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+                    rv_note.adapter = NoteAdapter(it!!){
+                        val noteBundle = bundleOf("NOTEDETAIL" to it)
+                        Navigation.findNavController(requireView()).navigate(R.id.action_homeFragment_to_detailFragment, noteBundle)
+                    }
                 }
             }
         }

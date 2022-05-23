@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.navigation.Navigation
-import com.coufie.tugaslistnotechtujuh.local.database.UserDatabase
+import com.coufie.tugaslistnotechtujuh.local.database.NoteDatabase
 import com.coufie.tugaslistnotechtujuh.local.model.User
 import kotlinx.android.synthetic.main.fragment_register.*
 import kotlinx.coroutines.GlobalScope
@@ -16,7 +16,7 @@ import kotlinx.coroutines.async
 
 class RegisterFragment : Fragment() {
 
-    var userDb : UserDatabase? = null
+    var noteDb : NoteDatabase? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,7 +43,7 @@ class RegisterFragment : Fragment() {
 
     private fun registerUser(){
 
-        userDb = UserDatabase.getInstance(requireContext())
+        noteDb = NoteDatabase.getInstance(requireContext())
 
         if(et_username.text.isNullOrEmpty()
             && et_password.text.isNullOrEmpty()
@@ -58,7 +58,7 @@ class RegisterFragment : Fragment() {
                     val username = et_username.text.toString()
                     val password = et_password.text.toString()
 
-                    val result = userDb?.UserDao()?.insertUser(User(null, username, password ))
+                    val result = noteDb?.noteDao()?.insertUser(User(null, username, password ))
 
                     activity?.runOnUiThread{
                         if(result != 0.toLong()){

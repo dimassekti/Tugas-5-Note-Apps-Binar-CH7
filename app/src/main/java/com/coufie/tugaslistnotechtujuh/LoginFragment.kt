@@ -9,8 +9,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.asLiveData
 import androidx.navigation.Navigation
-import com.coufie.tugaslistnotechtujuh.local.database.UserDatabase
 import com.coufie.tugaslistnotechtujuh.datastore.UserManager
+import com.coufie.tugaslistnotechtujuh.local.database.NoteDatabase
 import com.coufie.tugaslistnotechtujuh.local.model.User
 import kotlinx.android.synthetic.main.fragment_login.*
 import kotlinx.coroutines.GlobalScope
@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 
 class LoginFragment : Fragment() {
 
-    private var userDb : UserDatabase? = null
+    private var noteDb : NoteDatabase? = null
 
 //    lateinit var prefs : SharedPreferences
     lateinit var userManager: UserManager
@@ -73,12 +73,12 @@ class LoginFragment : Fragment() {
 
         if(et_input_username.text.isNotEmpty() && et_input_password.text.isNotEmpty()){
 
-            userDb = UserDatabase.getInstance(requireContext())
+            noteDb = NoteDatabase.getInstance(requireContext())
 
             val dataUsername = et_input_username.text.toString()
             val dataPassword = et_input_password.text.toString()
 
-            val userCheck = userDb?.UserDao()?.checkLogin(dataUsername, dataPassword)
+            val userCheck = noteDb?.noteDao()?.checkLogin(dataUsername, dataPassword)
 
             if (userCheck.isNullOrEmpty()){
                 Toast.makeText(requireContext(), "Username atau Password Masih Salah", Toast.LENGTH_LONG).show()
@@ -91,7 +91,7 @@ class LoginFragment : Fragment() {
                     userManager.saveData(id.toString(), dataPassword, dataUsername)
                     Log.d("tesuser", dataUsername)
 
-                    val result = userDb?.UserDao()?.insertUser(User(null, username, password ))
+                    val result = noteDb?.noteDao()?.insertUser(User(null, username, password ))
 
                     activity?.runOnUiThread{
                         if(result != 0.toLong()){

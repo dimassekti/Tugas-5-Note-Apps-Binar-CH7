@@ -6,8 +6,9 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.coufie.tugaslistnotechtujuh.local.dao.NoteDao
 import com.coufie.tugaslistnotechtujuh.local.model.Note
+import com.coufie.tugaslistnotechtujuh.local.model.User
 
-@Database(entities = [Note::class], version = 1)
+@Database(entities = [Note::class, User::class], version = 2)
 abstract class NoteDatabase : RoomDatabase(){
 
     abstract fun noteDao() : NoteDao
@@ -18,7 +19,7 @@ abstract class NoteDatabase : RoomDatabase(){
             if (INSTANCE == null){
                 synchronized(NoteDatabase::class){
                     INSTANCE = Room.databaseBuilder(context.applicationContext,
-                        NoteDatabase::class.java,"NoteApp.db").allowMainThreadQueries().build()
+                        NoteDatabase::class.java,"NoteApp.db").allowMainThreadQueries().fallbackToDestructiveMigration().build()
                 }
             }
             return INSTANCE

@@ -12,11 +12,13 @@ import com.coufie.tugaslistnotechtujuh.R
 import com.coufie.tugaslistnotechtujuh.local.database.NoteDatabase
 import com.coufie.tugaslistnotechtujuh.local.model.Note
 import kotlinx.android.synthetic.main.custom_dialog_edit_note.view.*
+import kotlinx.android.synthetic.main.fragment_detail.*
+import kotlinx.android.synthetic.main.fragment_detail.view.*
 import kotlinx.android.synthetic.main.item_note.view.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 
-class NoteAdapter (val listNote : List<Note>) : RecyclerView.Adapter<NoteAdapter.ViewHolder>(){
+class NoteAdapter (val listNote : List<Note>, val noteOnClick : (Note)->Unit) : RecyclerView.Adapter<NoteAdapter.ViewHolder>(){
 
     var noteDb : NoteDatabase?= null
 
@@ -31,11 +33,16 @@ class NoteAdapter (val listNote : List<Note>) : RecyclerView.Adapter<NoteAdapter
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val title = listNote[position].title
-        val content = listNote[position].content
+
+        holder.itemView.apply {
+            rootView.setOnClickListener {
+                noteOnClick(listNote[position])
+            }
+        }
 
         holder.itemView.tv_judul.text = listNote[position].title.toString()
         holder.itemView.tv_content.text = listNote[position].content.toString()
+        holder.itemView.tv_time.text = listNote[position].time.toString()
 
         holder.itemView.btn_delete.setOnClickListener {
             noteDb = NoteDatabase.getInstance(it.context)
@@ -117,6 +124,7 @@ class NoteAdapter (val listNote : List<Note>) : RecyclerView.Adapter<NoteAdapter
             ADBuilder.show()
 
         }
+
 
     }
 

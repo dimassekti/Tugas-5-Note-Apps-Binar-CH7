@@ -18,4 +18,7 @@ data class Note (
     @ColumnInfo(name = "content")
     var content : String ,
 
+    @ColumnInfo(name = "time")
+    var time : String
+
     ) : Parcelable
