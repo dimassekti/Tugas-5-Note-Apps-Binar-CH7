@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.navigation.Navigation
 import com.coufie.tugaslistnotechtujuh.datastore.UserManager
 import com.coufie.tugaslistnotechtujuh.local.database.NoteDatabase
@@ -66,6 +67,43 @@ class DetailFragment : Fragment() {
 
         iv_detail_edit.setOnClickListener {
 
+            val customDialogEdit = LayoutInflater.from(it.context).inflate(R.layout.custom_dialog_edit_note, null, false)
+
+//            edit data
+            val ADBuilder = AlertDialog.Builder(it.context)
+                .setView(customDialogEdit)
+                .create()
+
+//            custom dialog untuk edit
+            customDialogEdit.btn_update_note.setOnClickListener {
+
+                if(customDialogEdit.et_update_catatan.text.length > 0 && customDialogEdit.et_update_judul.text.length > 0){
+
+                    val newTitle = customDialogEdit.et_update_judul.text.toString()
+                    val newContent = customDialogEdit.et_update_catatan.text.toString()
+
+                    val result = noteDb?.noteDao()?.updateNote(Note(noteDetail.id, newTitle, newContent, noteDetail.time))
+
+                    (customDialogEdit.context as MainActivity).runOnUiThread(){
+                        if(result != 0){
+                            Toast.makeText(it.context, "Data Berhasil diupdate", Toast.LENGTH_LONG).show()
+                            noteDetail.content = newContent
+                            noteDetail.title = newTitle
+                            ADBuilder.dismiss()
+                            (customDialogEdit.context as MainActivity).recreate()
+
+                        }else{
+
+                        }
+                        (customDialogEdit.context as MainActivity).recreate()
+
+                    }
+
+                }else{
+                    Toast.makeText(it.context, "Mohon input data secara lengkap", Toast.LENGTH_LONG).show()
+                }
+            }
+            ADBuilder.show()
         }
 
         iv_detail_share.setOnClickListener {
@@ -78,6 +116,16 @@ class DetailFragment : Fragment() {
 
 
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        NoteDatabase.destroyInstance()
     }
 
 
