@@ -9,4 +9,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="custom_green">#F1FFE1</color>
     <color name="custom_greendua">#CBE3B0</color>
+    <color name="custom_blue">#084d88</color>
+    <color name="custom_bluedua">#143755</color>
+    <color name="custom_bluetiga">#B1C0CD</color>
 </resources>

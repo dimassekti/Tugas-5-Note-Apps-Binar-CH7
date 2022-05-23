@@ -1,6 +1,7 @@
 package com.coufie.tugaslistnotechtujuh
 
 import android.app.AlertDialog
+import android.content.DialogInterface
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -27,15 +28,17 @@ class HomeFragment : Fragment() {
     var noteDb : NoteDatabase? = null
     lateinit var userManager : UserManager
 
-    lateinit var username : String
+    var username = "null"
 
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
+
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_home, container, false)
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -43,11 +46,10 @@ class HomeFragment : Fragment() {
 
 //        prefs = requireContext().getSharedPreferences("SF", Context.MODE_PRIVATE)
 
-        username = "kosong"
-
         userManager = UserManager(requireContext())
-        userManager.userUsername.asLiveData().observe(viewLifecycleOwner, {
+        userManager.userUsername.asLiveData().observe(requireActivity(), {
             username = it.toString()
+            tv_header.setText("$username")
         })
 
         noteDb = NoteDatabase.getInstance(requireContext())
@@ -56,13 +58,29 @@ class HomeFragment : Fragment() {
 
 //        val usernameIn = prefs.getString("USERNAME", "")
 //        val passwordIn = prefs.getString("PASSWORD", "")
-
-        tv_header.setText("$username")
-
+        
         tv_logout.setOnClickListener {
 //            prefs.edit().clear().apply()
-            onDestroy()
-            Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_loginFragment)
+
+            val ADBuilder = AlertDialog.Builder(it.context)
+                .setTitle("Log out")
+                .setMessage("Yakin Logout?")
+                .setPositiveButton("Ya"){ dialogInterface: DialogInterface, i: Int ->
+                    GlobalScope.launch {
+                        userManager.clearData()
+
+                        requireActivity().runOnUiThread(){
+                            Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_loginFragment)
+                        }
+                    }
+                }
+                .setNegativeButton("Tidak"){ dialogInterface: DialogInterface, i: Int ->
+                    dialogInterface.dismiss()
+                }
+                .show()
+
+
+
         }
 
         tv_profile.setOnClickListener {

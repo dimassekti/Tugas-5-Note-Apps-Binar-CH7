@@ -21,9 +21,9 @@ class ProfileFragment : Fragment() {
 
     lateinit var userManager: UserManager
 
-    var id = ""
-    var username = ""
-    var password = ""
+    lateinit var id : String
+    lateinit var username : String
+    lateinit var password : String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
